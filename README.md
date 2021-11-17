@@ -1,3 +1,8 @@
+#THIS IS AN UNFINISHED PROJECT.
+SOME OF THIS WORK IS NOT MINE AND IS TAKEN FROM THE PORTFOLIO PROJECT SCOPE VIDEO AND SOME IS TAKEN FROM THIS PAGE BY ADAMPILLIS(https://github.com/AdamPillis/Battleship-Game/blob/debc0a3af6cbeb02ea338cc1b48acd5cb3f26e77/run.py#L99)
+
+
+
 ![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
 
 Welcome Jimmyjamjam13,
