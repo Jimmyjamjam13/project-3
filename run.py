@@ -5,18 +5,19 @@ scores = {"computer": 0, "player": 0}
 
 
 class Board:
-
-    """Will create player and computer board based on user input."""
-
+    
+    """Will create player and computer board based on
+    user input. """
+    
     def __init__(self, name, size, ship_nums, type):
         self.name = name
         self.size = size
         self.ship_nums = ship_nums
         self.type = type
-        self.board = [["." for x in range(size)] for y in range(size)]
+        self.board = [['|  ' for x in range(size)] for y in range(size)]
         self.ships = []
         self.guesses = []
-
+    
     def print_board(self):
         for row in self.board:
             print(' '.join(row))
@@ -26,7 +27,7 @@ class Board:
         self.board[x][y] = 'X'
 
         if (x, y) in self.ships:
-            self.board[x][y] = 'O'
+            self.board[x][y] = '| O'
             return f'{self.name}, you hit and sank a battleship!'
         else:
             return f"{self.name}, you've missed this time..."
@@ -38,26 +39,38 @@ class Board:
         else:
             self.ships.append((x, y))
             if self.type == 'player':
-                self.board[x][y] = '@'
-
+                self.board[x][y] = '| @'
+  
 
 def random_number(size):
-    
-    """Returns random integer between 0 and the length of the board
-    chosen by the player."""
-
+    """
+    Returns random integer between 0 and the length of the board
+    chosen by the player.
+    """
     return randint(0, (size) - 1)
 
 
-def valid_coordinates(x, y, board):
-    return [['O' for count in range(board)] for count in range(board)]
+def valiidate_coordinates(x, y, board):
+    while True:
+        for board_guess in board.guess:
+            if (x, y) == board_guess:
+                print(f'{board.name}, you already guessed {(x, y)}.')
+                print('Please try again.')
+                return False
+
+        break
+
+    if (x, y) in board.ships:
+        board.guesses.append((x, y))
+        board.board[x][y] = '| O'
+        print('A Battleship has been hit!')
+    else:
+        board.guesses.append((x, y))
+        board.board[x][y] = '| X'
+        print('Missile missed target...')
 
 
-def populate_board(board):
-
-    """Populates game board for each player, one for the user
-    and one for the computer."""
-
+def game_setup(board):
     print(f"{board.name}'s board:\n")
 
     size = board.size
@@ -71,12 +84,10 @@ def populate_board(board):
     print(board.ships)
 
 
-def make_guess(board):
-    
-    """For computer, generates random x and y coordanites.
-    For player, row and col input is requested."""
+def make_guesses(board):
 
     size = board.size
+
     while True:
         if board.type == 'computer':
             print("Computer's turn to guess")
@@ -86,8 +97,8 @@ def make_guess(board):
             row_guess = input('Enter row num:\n')
             col_guess = input('Enter column num:\n')
             
-        row = player_choices(str(row_guess), 0, size)
-        col = player_choices(str(col_guess), 0, size)
+        row = valiidate_coordinates(str(row_guess), 0, size)
+        col = valiidate_coordinates(str(col_guess), 0, size)
 
         if row and col:
             break
@@ -95,25 +106,53 @@ def make_guess(board):
     return [int(row_guess), int(col_guess)]
 
 
-def player_choices(values, a, b):
- 
-    """ checks users guesses"""
-
-    board_guesses = board.guesses
+def play_game(computer_board, player_board):
     while True:
-        for board_guess in board_guesses:
-            if (x, y) == board_guess:
-                print(f'{board.name}, you already guessed {(x, y)}.')
-                print('Please try again.')
-                return False
+        game_setup(board)
+        print('~' * 60)
+        game_setup(board)
 
-        break
+        player_guess = make_guesses(board)
+        p_row = player_guess[0]
+        p_col = player_guess[1]
+        valiidate_coordinates(board, p_row, p_col)
 
-    if (x, y) in other_board.ships:
-        board.guesses.append((x, y))
-        other_board.board[x][y] = '| O'
-        print('A Battleship has been hit!')
-    else:
-        board.guesses.append((x, y))
-        other_board.board[x][y] = '| X'
-        print('Missile missed target...')
+        comp_guess = make_guesses(_board)
+        c_row = comp_guess[0]
+        c_col = comp_guess[1]
+        valiidate_coordinates(board, c_row, c_col)
+
+        if len(other_board.guesses) == ships:
+            break
+
+    print('finished game')
+
+
+def new_game():
+
+    """Runs new game every time user reloads
+    or restarts the game"""
+
+    size = 5
+    num_ships = 4
+    scores["computer"] = 0
+    scores["player"] = 0
+    print("-" * 35)
+    print(print('WELCOME TO BATTLESHIPS'))
+    print(f" Board Size: {size}. Number of ships: {num_ships}")
+    print("Top left hand corner is row 0, col 0")
+    print("-" * 35)
+    player_name = input("Please enter your name: \n")
+    print("-" * 35)
+
+    computer_board = Board(size, num_of_ships, "computer", type="computer")
+    player_board = Board(size, num_of_ships, player_name, type="player")
+
+    for _ in range(num_ships):
+        game_setup(computer_board)
+        game_setup(player_board)
+    
+    play_game(player_board, computer_board)
+
+
+new_game()
